@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Adding attributes and selection to SVG element</title>
+<body>
+<script src="../D3/d3.v3.min.js"></script>
+<script>
+    var svg = d3.select("body").append("svg").attr("width","300px")
+            .attr("height","100px").style("background","orange");
+            
+            
+            
+    
+</script>
+<div id="demo">Dinosaurs</div>
+<div class="demoClass">Elephant</div>
+<div>Cat</div>
+
+<script>
+   d3.selectAll("div").style("background","orange");
+   
+ d3.select("#demo").style("background","green");
+  d3.select(".demoClass").style("background","green");
+            
+            
+            
+    
+</script>
+</body>
+</html>

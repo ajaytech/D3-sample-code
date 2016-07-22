@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<title>Adding Geometrical Objects</title>
+
+<meta charset="utf-8">
+<body>
+
+<script src="../d3.v3.min.js"></script>
+<script>
+var svg = d3.select("body").append("svg").attr("width","300px")
+            .attr("height","100px")
+            .style("background","orange")
+           //Draw the rectangle 
+            svg.append("rect").attr("width","100px")
+            .attr("height","50px")
+            .attr("x","50px")
+            .attr("y","20px")
+            .style("fill","blue");
+
+                 //Draw the Circle
+                svg.append("circle")
+                  .attr("cx", 30)
+                  .attr("cy", 30)
+                 .attr("r", 20)
+                  .style("fill","#fff");
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<title>Loading Data from files</title>
+<meta charset="utf-8">
+<body>
+<script src="../d3.v3.min.js"></script>
+<script>
+var heightSVG = 700;
+var widthSVG = 700;
+d3.csv("dataDemo6.csv",type,function(error, data) {
+     if (error) throw error;
+var svg = d3.select("body").append("svg").attr("width",widthSVG+"px")
+            .attr("height",heightSVG+"px")
+            .style("background","black");
+           console.log(data);
+            svg.selectAll().data(data)
+            .enter()
+            .append("rect")
+            .attr("width","20px")
+            .attr("height",function(d,i){
+                return (d*10)+"px";
+            })
+            .style("fill","orange")
+            .attr("y",function(d,i){
+             return heightSVG - (d*10)+"px";
+            })
+            .attr("x",function(d,i){
+                return i*100+"px";
+            })
+        });
+function type(d) {
+  return d.value;
+}
+            
+</script>
+</body>
+</html>

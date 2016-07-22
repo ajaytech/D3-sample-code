@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<title>Adding style to SVG element</title>
+<meta charset="utf-8">
+
+<body>
+    <style>
+        .blueBack {
+            background: blue;
+        }
+    </style>
+
+    <script src="../d3.v3.min.js"></script>
+    <script>
+      var svg = d3.select("body").append("svg").attr("width", "100px")
+            .attr("height", "100px")
+            .style("background", "orange");
+    /*    var svg = d3.select("body").append("svg").attr("width", "100px")
+            .attr("height", "100px")
+            .attr("class", "blueBack");*/
+    </script>
+</body>
+
+</html>

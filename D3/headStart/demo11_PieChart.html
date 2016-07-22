@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+ <head>
+</head>
+<title>Scales Linear and ordinal</title>
+<meta charset="utf-8">
+
+
+
+<body >
+    <script src="../d3.v3.min.js"></script>
+    <script >
+   
+    
+ var padding = 1;
+ var paddingText = 30;  
+ var paddingChart = 40; 
+var heightSVG = 700;
+var widthSVG = 700;
+var animationDuration = 1000;
+var animationDelay = 1000;
+var radius = 200;
+var paddingPieX = 200;
+var paddingPieY = 250;
+
+
+var data = [10,20,30,40,120];
+var color = d3.scale.linear().domain([0,data.length])
+    .range(["green", "orange"]);
+//var data =[10,20,30,40,10,20,30,40,10,20,30,40,10,20,30,40,10,10,20,30,40,10,20,30,40,10,20,30,40,10,20,30,40];
+
+
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(100);
+
+var labelArc = d3.svg.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d; });
+
+var svg = d3.select("body").append("svg").attr("width", widthSVG+200)
+    .attr("height", heightSVG+200)
+    .style("transform", "translate("+paddingChart+"px,"+paddingChart+"px)")
+    .style("padding-left","100px")
+    .style("background", "#000");
+
+var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g");
+
+var tooltip = d3.select('body').append('div')
+              .style('position','absolute')
+              .style('background','#fff')
+              .style('padding','5 15px')
+              .style('border','1px #fff solid')
+              .style('border-radius','5px')
+              .style('opacity','0');
+
+g.append("path")
+      .attr("d", arc)
+      .style("transform", "translate("+paddingPieX+"px,"+paddingPieY+"px)")
+      .style("fill", "#000000");
+
+g.append("text")
+      .attr("transform", function(d) { 
+        console.log(parseInt(labelArc.centroid(d)[0])+paddingPieX);
+        console.log(parseInt(labelArc.centroid(d)[1])+paddingPieY);
+        //debugger;
+        return "translate("+(parseInt(labelArc.centroid(d)[0])+paddingPieX)+","+(parseInt(labelArc.centroid(d)[1])+paddingPieY)+")";
+         })
+      .attr("dy", ".35em")
+      .text(function(d) { return d.value; });
+
+      
+
+ g.on('mouseover',function(d){
+      tooltip.transition()
+        .style('opacity',1);
+        tooltip.html(d.value)
+          .style('left',(d3.event.pageX)+"px")
+          .style('top',(d3.event.pageY)+"px");
+          d3.select(this).style('opacity',0.5);
+    })
+    .on('mouseout',function(){
+        d3.select(this).style('opacity',1);
+    });
+
+  d3.selectAll("path").transition()
+  .duration(5000)
+  .style("fill", "#000000")
+  .style("fill", function(d,i) { return color(i); })
+  .ease('elastic');
+      
+   
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+.blueBack{
+    
+    background : blue;
+    
+}
+
+.rectangle{
+    transform: translate(30px,-30px) !important;
+}
+
+.circle{
+    transform: translate(30px,0px) !important;
+    
+}

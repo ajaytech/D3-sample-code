@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<title>Scales Linear and ordinal</title>
+<meta charset="utf-8">
+
+<body>
+    <script src="../d3.v3.min.js"></script>
+    <script>
+    
+var heightSVG = 700;
+var widthSVG = 700;
+
+
+//var data =[10,20,30,40,10,20,30,40,10,20,30,40,10,20,30,40,10,10,20,30,40,10,20,30,40,10,20,30,40,10,20,30,40];
+var data = [10,20,30,40,100];
+
+var y = d3.scale.linear().domain([0,d3.max(data)])
+            .range([0,heightSVG]);
+            
+var x = d3.scale.ordinal().domain(d3.range(data.length))
+    .rangeRoundBands([0, widthSVG]);
+
+
+var svg = d3.select("body").append("svg").attr("width", widthSVG)
+    .attr("height", heightSVG)
+    .style("background", "black");
+    
+svg.selectAll().data(data)
+    .enter()
+    .append("rect")
+    //.attr("width",(y.rangeBand()-5)+"px")
+    .attr("width","20px")
+    .attr("height", function(d,i){
+        return y(d)+"px";
+    })
+    .style("fill", "orange")
+    .attr("y", function(d,i) {
+     return (heightSVG - y(d))+"px";
+    })
+    .attr("x", function(d, i) {
+        return x(i);
+    })
+    </script>
+</body>
+
+</html>

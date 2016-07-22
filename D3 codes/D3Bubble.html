@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Bubble chart</title>
+<link rel="stylesheet" type="text/css" href="style.css"></link>
+
+<body>
+<script src="../D3/d3.v3.min.js"></script>
+<script>
+
+    var data={
+        "val1": [10,20,30,40,100],
+        "val2":[20,30,50,40,70]};
+        
+    
+   
+    var heightSVG = 700;
+    var widthSVG = 700;
+    var padding = 10;
+    var paddingText = 30;
+    var paddingChart = 40;
+    var axisMargin = 30;
+    var margin = {
+        
+        'top':5,
+        'right':20,
+        'bottom':20,
+        'left':50
+    };
+    var minR = 20;
+    var maxR = 70;
+    var dataVal1 = data["val1"];
+    var dataVal2 = data["val2"];
+    
+    var y = d3.scale.linear().domain([0,d3.max(dataVal1)])
+            .range([heightSVG-axisMargin,0]);
+            
+    var x = d3.scale.ordinal().domain(d3.range(dataVal1.length))
+            .rangeRoundBands([0,widthSVG]);
+    
+    var r = d3.scale.linear().domain([d3.min(dataVal2),d3.max(dataVal2)])
+            .range([minR,maxR]);
+
+    var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient('left')
+                .ticks(5);
+                
+    var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient('bottom')
+                .ticks(5);
+            
+ 
+          
+    var svg = d3.select("body")
+                .append("svg")
+                .attr("width",widthSVG)
+                .attr("height",heightSVG)
+                .style("transform","translate("+paddingChart+"px,"+paddingChart+"px")
+                .style("background","black");
+    var tooltip = d3.select('body')
+                    .append('div')
+                    .style('position','absolute')
+                    .style('background','#fff')
+                    .style('padding','5px 15px')
+                    .style('border','1px #fff solid')
+                    .style('opacity','0');
+    
+    
+    
+                svg.append("g")
+                .call(yAxis)
+                .attr("transform","translate("+axisMargin+",0)")
+                .style("stroke","#fff");
+                
+                 svg.append("g")
+                .call(xAxis)
+                .attr("transform","translate(0,"+(heightSVG-axisMargin)+")")
+                .style("stroke","#fff");
+                
+                
+                svg.append("g")
+                .attr("class","circle")
+                .selectAll()
+                .data(dataVal1)
+                .enter()
+                .append("circle")
+                .attr("r",function(d,i){
+                    return r(dataVal2[i]);
+                })
+                .attr("width","10px")
+                .style("fill","orange")
+                .attr("cy",function(d,i){
+                    return heightSVG ;
+                })
+                .attr("cx",function(d,i){
+                    return x(i);
+                }).on('mouseover',function(d,i){
+                    
+                    tooltip.transition().style('opacity',1);
+                    tooltip.html("y: "+d+" / r: "+dataVal2[i])
+                    .style('left',(d3.event.pageX)+"px")
+                    .style('top',(d3.event.pageY)+"px");
+                    
+                    d3.select(this).style('opacity',0.5);
+                    
+                }).on('mouseout',function(d){
+                    
+                    d3.select(this).style('opacity',1);
+                    
+                });
+                
+                
+                d3.selectAll("circle").transition()
+                .duration(4000)
+                .attr('cy',function(d,i){
+                     return (y(d))+"px" ;
+                })
+                
+            
+            
+    
+</script>
+</body>
+</html>

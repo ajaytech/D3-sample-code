@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+ <head>
+</head>
+<title>Pie chart</title>
+
+<body >
+<script src="../D3/d3.v3.min.js"></script>
+<script >
+
+var padding = 1;
+var paddingText = 30;  
+var paddingChart = 40; 
+var heightSVG = 700;
+var widthSVG = 700;
+var extraPadding = 200;
+var animationDuration = 1000;
+var animationDelay = 1000;
+var radius = 200;
+var innerRadius = 0;
+var paddingPieX = 200;
+var paddingPieY = 250;
+var unit = "px";
+
+
+var data = [10,20,30,40,120];
+var color = d3.scale.linear().domain([0,data.length])
+            .range(["green","orange"]);
+            
+var arc = d3.svg.arc()
+        .outerRadius(radius)
+        .innerRadius(innerRadius);
+        
+var labelArc = d3.svg.arc()
+            .outerRadius(radius-paddingText)
+            .innerRadius(innerRadius-paddingText);
+            
+var pie = d3.layout.pie()
+            .sort(null)
+            .value(function(d){return d;});
+            
+            
+var svg = d3.select("body").append("svg")
+        .attr("width",widthSVG+extraPadding)
+        .attr("height",heightSVG+extraPadding)
+        .style("background","#000");
+        
+var tooltip = d3.select('body')
+        .append('div')
+        .style('position','absolute')
+        .style('background','#fff')
+        .style('padding','5px 15px')
+        .style('border','1px #fff solid')
+        .style('opacity','0');
+    
+        
+var g = svg.selectAll(".arc")
+        .data(pie(data))
+        .enter()
+        .append("g");
+        
+        g.append("path")
+        .attr("d",arc)
+        .style("transform","translate("+paddingPieX+"px,"+paddingPieY+"px)")
+        .style("fill",function(d,i){return "#000";})
+        
+g.append("text")
+    .attr("transform",function(d){
+        
+        return "translate("+(parseInt(labelArc.centroid(d)[0])+paddingPieX-10)+","
+        +(parseInt(labelArc.centroid(d)[1])+paddingPieY-10)+")";
+    })
+    .attr("dy",".35em")
+    .text(function(d){return d.value;});
+    
+    
+    g.on("mouseover",function(d){
+       tooltip.transition()
+       .style('opacity',1);
+       
+       tooltip.html(d.value)
+       .style('left',(d3.event.pageX)+"px")
+       .style('top',(d3.event.pageY)+"px")
+       
+       d3.select(this).style('opacity',0.5);
+        
+    }).on("mouseout",function(){
+          d3.select(this).style('opacity',1);
+    });
+        
+    d3.selectAll("path").transition()
+    .duration(animationDuration)
+    .style("transform","translate("+paddingPieX+"px,"+paddingPieY+"px)")
+    .style("fill",function(d,i){return color(i)});
+        
+        
+        
+        
+        
+
+    
+
+      
+   
+    </script>
+</body>
+
+</html>
